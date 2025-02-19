@@ -19,13 +19,29 @@ class FriendController extends Controller
         $friends = Friend::where(function ($query) {
             $query->where('sender_id', Auth::user()->id)
                         ->orWhere('reciever_id', Auth::user()->id);
-        })->where('status','accepted')->get();
+        })->where('status','accepted');
+
+        $search = $request->search;
+
 
         if ($request->search) {
             
+            $friends = $friends->whereHas('reciever', function($q) use($search) {
+                $q->where('id' , '!=', Auth::user()->id);
+                $q->where('name', 'like', '%'.$search.'%');
+
+            })->orWhereHas('sender', function($q) use($search) {
+                $q->where('id' , '!=', Auth::user()->id);
+                $q->where('name', 'like', '%'.$search.'%');
+
+            });
+
         }
 
-        return view('friends', compact('friends'));
+        $friends = $friends->get();
+        // dd($friends);
+
+        return view('friends', compact('friends', 'search'));
 
 
   
