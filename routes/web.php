@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::match(['PATCH', 'PUT'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::put('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
-    Route::delete('/profile/delete', [ProfileController::class, 'deleteAccount'])->name('profile.delete');
+    Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/friends', [FriendController::class, 'index'])->name('friends');
 });
 

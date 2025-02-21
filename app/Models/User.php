@@ -23,6 +23,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'bio',
+        'profile_photo',
     ];
 
     /**
@@ -46,6 +48,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getProfilePhotoUrlAttribute()
+    {
+        return $this->profile_photo ? Storage::url($this->profile_photo) : '/default-profile.png';
     }
 
     public function senders(){
