@@ -96,6 +96,9 @@
                 <form action="{{ route('profile.destroy') }}" method="POST" class="mt-5">
                     @csrf
                     @method('DELETE')
+                    <label class="text-gray-700">Confirm Password:</label>
+                    <input type="password" name="password" class="border p-2 mb-2 rounded-md shadow-sm  border-gray-300 w-full">
+                    @error('password') <p class="text-red-500">{{ $message }}</p> @enderror
 
                     <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                         Delete Account

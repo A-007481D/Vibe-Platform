@@ -27,11 +27,11 @@ class FriendController extends Controller
         if ($request->search) {
             
             $friends = $friends->whereHas('reciever', function($q) use($search) {
-                $q->where('id' , '!=', Auth::user()->id);
+                $q->where('uuid' , '!=', Auth::user()->id);
                 $q->where('name', 'like', '%'.$search.'%');
 
             })->orWhereHas('sender', function($q) use($search) {
-                $q->where('id' , '!=', Auth::user()->id);
+                $q->where('uuid' , '!=', Auth::user()->id);
                 $q->where('name', 'like', '%'.$search.'%');
 
             });

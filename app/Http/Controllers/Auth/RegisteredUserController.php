@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -29,16 +30,25 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        $nameParts = explode(' ', $request->input('name'));
+        $firstName = $nameParts[0];
+        $lastName = $nameParts[1] ?? null;
+
+        $username = $this->generateUniqueUsername($firstName);
+
+//        $request->validate([
+//            'last_name' => ['nullable', 'string', 'max:50'],
+//            'username' => ['nullable', 'string', 'max:50', 'unique:users,username'],
+//            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+//            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+//        ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'username' => $username,
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
         ]);
 
         event(new Registered($user));
@@ -46,5 +56,18 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(route('profile.edit', absolute: false));
+    }
+    private function generateUniqueUsername($firstName)
+    {
+        $baseUsername = Str::lower($firstName);
+        $username = $baseUsername;
+
+        $counter = 1;
+        while (User::where('username', $username)->exists()) {
+            $username = $baseUsername . $counter;
+            $counter++;
+        }
+
+        return $username;
     }
 }
