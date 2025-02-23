@@ -93,7 +93,7 @@ class User extends Authenticatable
      */
     public function senders()
     {
-        return $this->hasMany(Friend::class, 'sender_id');
+        return $this->hasMany(FriendRequest::class, 'sender_id');
     }
 
     /**
@@ -101,7 +101,7 @@ class User extends Authenticatable
      */
     public function receivers()
     {
-        return $this->hasMany(Friend::class, 'receiver_id');
+        return $this->hasMany(FriendRequest::class, 'receiver_id');
     }
 
     /**

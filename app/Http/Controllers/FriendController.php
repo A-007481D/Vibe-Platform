@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Friend;
+use App\Models\FriendRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,20 +13,20 @@ class FriendController extends Controller
      */
     public function index(Request $request)
      {
-    //     $friends1 = Friend::where('sender_id', Auth::user()->id)
+    //     $friends1 = FriendRequest::where('sender_id', Auth::user()->id)
     //         ->orWhere('reciever_id', Auth::user()->id)->where('status','accepted')->get();
 
-        $friends = Friend::where(function ($query) {
+        $friends = FriendRequest::where(function ($query) {
             $query->where('sender_id', Auth::user()->id)
-                        ->orWhere('reciever_id', Auth::user()->id);
+                        ->orWhere('receiver_id', Auth::user()->id);
         })->where('status','accepted');
 
         $search = $request->search;
 
 
         if ($request->search) {
-            
-            $friends = $friends->whereHas('reciever', function($q) use($search) {
+
+            $friends = $friends->whereHas('receiver', function($q) use($search) {
                 $q->where('uuid' , '!=', Auth::user()->id);
                 $q->where('name', 'like', '%'.$search.'%');
 
@@ -44,7 +44,7 @@ class FriendController extends Controller
         return view('friends', compact('friends', 'search'));
 
 
-  
+
     }
 
     /**
@@ -66,7 +66,7 @@ class FriendController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Friend $friend)
+    public function show(FriendRequest $friend)
     {
         //
     }
@@ -74,7 +74,7 @@ class FriendController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Friend $friend)
+    public function edit(FriendRequest $friend)
     {
         //
     }
@@ -82,7 +82,7 @@ class FriendController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Friend $friend)
+    public function update(Request $request, FriendRequest $friend)
     {
         //
     }
@@ -90,7 +90,7 @@ class FriendController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Friend $friend)
+    public function destroy(FriendRequest $friend)
     {
         //
     }
