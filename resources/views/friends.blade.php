@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-@section('search')
-    {{$search}}
-@endsection
 
 <div class="container mx-auto mt-10">
     <h1 class="text-3xl">Your Friends</h1>

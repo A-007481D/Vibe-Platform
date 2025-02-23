@@ -38,7 +38,7 @@
                 <!-- Search -->
                 <div class="flex space-x-2 items-center">
                     @if (@auth()->check())
-                    <form action="{{ route('friends') }}" method="GET">
+                    <form action="{{ route('search.index') }}" method="GET">
                         <div class="relative">
                             <input value="@yield('search')" name="search" type="text" placeholder="Search users..." class="w-72 rounded-full bg-gray-100 px-4 py-2 text-sm border-0 focus:ring-2 focus:ring-indigo-500">
                         </div>
