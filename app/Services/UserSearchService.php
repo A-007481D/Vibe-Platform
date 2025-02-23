@@ -8,6 +8,6 @@ class UserSearchService
 {
     public function searchUsers($search)
     {
-        return User::where('username', 'like', '%' . $search . '%')->get();
+        return User::where('username', 'like', '%' . $search . '%')->orWhere('email', 'like', '%' . $search . '%')->get();
     }
 }
