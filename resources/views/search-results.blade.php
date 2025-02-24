@@ -18,9 +18,15 @@
                             <span class="text-sm text-gray-500">{{ $user->bio ?? 'No bio available' }}</span>
 
                             <div class="flex mt-4">
-                                <a href="#" class="px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
-                                    Add friend
-                                </a>
+                                @if ($user->id !== auth()->id())
+                                    <form action="{{ route('friend-request.send', $user->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit"
+                                                class="px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
+                                            Add Friend
+                                        </button>
+                                    </form>
+                                @endif
                                 <a href="#" class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100">
                                     Message
                                 </a>
