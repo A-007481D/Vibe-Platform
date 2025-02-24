@@ -24,6 +24,16 @@ class FriendController extends Controller
          return view('friends', compact('friends'));
      }
 
+    public function unfriend(User $user)
+    {
+        $authUser = auth()->user();
+
+        $authUser->friends()->detach($user->id);
+
+        return redirect()->back()->with('success', 'Friend removed successfully!');
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
