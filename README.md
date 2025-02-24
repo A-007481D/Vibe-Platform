@@ -1,66 +1,70 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Vibe - Social Media Platform  
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 📌 Introduction  
 
-## About Laravel
+**Vibe** is a social media platform designed to foster meaningful connections between users. It allows users to search for others, send friend requests, and interact through posts, likes, and comments. With an interactive news feed, real-time notifications, and an intuitive UI, Vibe offers a seamless socializing experience while maintaining simplicity and efficiency.  
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🎯 Project Context  
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The company **"Vibe"** aims to expand its application by integrating social networking features. This new phase transforms the platform into a fully functional social network where users can:  
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+✔️ Add and manage friends  
+✔️ Post and share content (text/images)  
+✔️ React to posts through likes and comments  
+✔️ View a dynamic and interactive news feed  
+✔️ Receive real-time notifications for social interactions  
 
-## Learning Laravel
+The goal is to **enhance user engagement** while maintaining a clean and efficient experience.  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🚀 Features  
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 🔗 Friend System  
+- ✅ Send friend requests  
+- ✅ Accept or reject friend requests  
+- ✅ View a list of friends  
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 📝 Post System  
+- ✅ Create text and image posts  
+- ✅ Edit and delete posts  
+- ✅ Display posts sorted by date  
 
-## Laravel Sponsors
+### 📰 News Feed  
+- ✅ Display posts from friends  
+- ✅ Sort posts from newest to oldest  
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 👤 Profile Management  
+- ✅ View user profiles  
+- ✅ Display user posts and interactions  
 
-### Premium Partners
+### ❤️ Likes & Comments  
+- ✅ Like posts  
+- ✅ Display total like count  
+- ✅ Add and view comments under posts  
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 🎁 Bonus Features  
+- ✅ **Real-time notifications** for friend requests and post interactions  
+- ✅ **Post sharing** system  
+- ✅ **Infinite scrolling** for a smoother feed experience  
+- ✅ **Hashtag system** to categorize and organize posts  
 
-## Contributing
+## 🛠️ Tech Stack  
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Backend**: Laravel  
+- **Frontend**: Blade + Tailwind CSS  
+- **Database**: PostgreSQL  
+- **Notifications**: Pusher (WebSockets)  
+- **Authentication**: Laravel Breeze  
 
-## Code of Conduct
+## 🏗️ Installation Guide  
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 📌 Prerequisites  
+Make sure you have the following installed:  
+- PHP 8+  
+- Composer  
+- PostgreSQL  
+- Node.js & npm  
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 📥 Clone the Repository  
+```bash
+git clone https://github.com/your-username/vibe.git
+cd vibe
