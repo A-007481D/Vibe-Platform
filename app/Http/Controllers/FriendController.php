@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\FriendRequest;
 use App\Services\FriendshipService;
 use Illuminate\Http\Request;
@@ -29,6 +30,7 @@ class FriendController extends Controller
         $authUser = auth()->user();
 
         $authUser->friends()->detach($user->id);
+        $user->friends()->detach($authUser->id);
 
         return redirect()->back()->with('success', 'Friend removed successfully!');
     }
