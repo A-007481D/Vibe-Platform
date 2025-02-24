@@ -7,6 +7,7 @@ use App\Models\FriendRequest;
 use App\Services\FriendshipService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FriendController extends Controller
 {
@@ -29,8 +30,18 @@ class FriendController extends Controller
     {
         $authUser = auth()->user();
 
-        $authUser->friends()->detach($user->id);
-        $user->friends()->detach($authUser->id);
+        // Ensure we delete the correct friendship row
+        $user1 = $authUser->id;
+        $user2 = $user->id;
+
+        if ($user1 > $user2) {
+            [$user1, $user2] = [$user2, $user1]; // Ensure ordering matches insertion logic
+        }
+
+        DB::table('friends')
+            ->where('user_id', $user1)
+            ->where('friend_id', $user2)
+            ->delete();
 
         return redirect()->back()->with('success', 'Friend removed successfully!');
     }

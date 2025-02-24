@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\FriendRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FriendRequestService
 {
@@ -12,7 +13,7 @@ class FriendRequestService
     {
         $sender = Auth::user();
 
-        // Ensure the sender is not trying to add themselves
+        // the sender cannot add themself
         if ($sender->id === $receiver->id) {
             return false;
         }
@@ -30,7 +31,6 @@ class FriendRequestService
             return false; // Request already exists
         }
 
-        // Create the friend request
         return FriendRequest::create([
             'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,
@@ -42,11 +42,21 @@ class FriendRequestService
     {
         $request->update(['status' => 'accepted']);
 
-        $sender = $request->sender;
-        $receiver = $request->receiver;
+        $user1 = $request->sender_id;
+        $user2 = $request->receiver_id;
 
-        $sender->friends()->attach($receiver->id);
-        $receiver->friends()->attach($sender->id);
+        if ($user1 > $user2) {
+            [$user1, $user2] = [$user2, $user1]; // Swap to maintain order
+        }
+
+        if (!DB::table('friends')->where('user_id', $user1)->where('friend_id', $user2)->exists()) {
+            DB::table('friends')->insert([
+                'user_id' => $user1,
+                'friend_id' => $user2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 
     public function rejectRequest(FriendRequest $request)
