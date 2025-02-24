@@ -41,6 +41,12 @@ class FriendRequestService
     public function acceptRequest(FriendRequest $request)
     {
         $request->update(['status' => 'accepted']);
+
+        $sender = $request->sender;
+        $receiver = $request->receiver;
+
+        $sender->friends()->attach($receiver->id);
+        $receiver->friends()->attach($sender->id);
     }
 
     public function rejectRequest(FriendRequest $request)
