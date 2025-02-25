@@ -128,4 +128,10 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
             ->withTimestamps();
     }
+
+    public function isFriend($user)
+    {
+        return $this->friends()->where('friend_id', $user->id)->exists();
+    }
+
 }
