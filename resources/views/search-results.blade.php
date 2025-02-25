@@ -21,10 +21,11 @@
                                 @if ($user->id !== auth()->id())
                                     <form action="{{ route('friend-request.send', $user->id) }}" method="POST">
                                         @csrf
-                                        <button type="submit"
-                                                class="px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
-                                            Add Friend
-                                        </button>
+                                        @if ($user->id !== auth()->id())
+                                            <button type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 add-friend-btn" data-user-id="{{ $user->id }}">
+                                                Add Friend
+                                            </button>
+                                        @endif
                                     </form>
                                 @endif
                                 <a href="#" class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100">
