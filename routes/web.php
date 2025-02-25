@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\FriendRequestController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserSearchController;
@@ -37,8 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/friend-request/reject/{request}', [FriendRequestController::class, 'rejectRequest'])->whereUuid('request')->name('friend-request.reject');
     Route::post('/friend-request/cancel/{request}', [FriendRequestController::class, 'cancelRequest'])->whereUuid('request')->name('friend-request.cancel');
     Route::delete('/friend/unfriend/{user}', [FriendController::class, 'unfriend'])->name('friend.unfriend');
-
     Route::get('/friend-requests', [FriendRequestController::class, 'showRequests'])->name('friend-requests');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 });
 
 Route::middleware('guest')->group(function () {
