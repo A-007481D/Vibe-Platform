@@ -28,10 +28,10 @@
                             <a href="#" class="py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100">
                                 Message
                             </a>
-                            <form action="{{ route('friend.unfriend', ['user' => $friendUser->id]) }}" method="POST" class="ms-2">
+                            <form action="{{ route('friend.unfriend', ['user' => $friendUser->id]) }}" method="POST" class="ms-2 unfriend-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="px-4 py-2 text-sm font-medium text-red-500 border border-red-500 rounded-lg hover:bg-red-100">
+                                <button type="button" class="px-4 py-2 text-sm font-medium text-red-500 border border-red-500 rounded-lg hover:bg-red-100 unfriend-btn" data-user-id="{{ $friendUser->id }}">
                                     Unfriend
                                 </button>
                             </form>
