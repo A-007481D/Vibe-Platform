@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\FriendRequestSent;
 use App\Models\FriendRequest;
 use App\Models\User;
 use App\Services\FriendRequestService;
@@ -21,6 +22,8 @@ class FriendRequestController extends Controller
         $receiver = User::findOrFail($receiverId);
 
         if ($this->friendRequestService->sendRequest($receiver)) {
+            event(new FriendRequestSent($receiver)); 
+
             return redirect()->back()->with('success', 'Friend request sent!');
         }
 
