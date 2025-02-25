@@ -5,8 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Vibe')</title>
+    @vite(['resources/js/app.js'])
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <script>
+        window.Laravel = {
+            userId: @json(auth()->id()),
+        };
+    </script>
+
+
 
 </head>
 
@@ -35,6 +44,9 @@
                         <a href="{{ route('search.index') }}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Connect
                         </a>
+                        <a href="{{ route('friend-requests') }}" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Requests
+                        </a>
                     </div>
                 </div>
 
@@ -50,36 +62,39 @@
 
                     <!-- User Menu -->
                     <div class="ml-4 relative flex items-center space-x-4">
-                        <!-- Notifications -->
-                        <div x-data="{ dropdownOpen: true }" class="relative my-32">
-                            <div class="relative">
-                                <button @click="dropdownOpen = !dropdownOpen" class="p-1 rounded-full text-gray-400 hover:text-gray-500">
-                                    <span class="sr-only">View notifications</span>
-                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                                    </svg>
-                                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
-                                </button>
-                            </div>
+                        <!-- Notifications Dropdown -->
+                        <div x-data="{ dropdownOpen: false }" class="relative">
+                            <button @click="dropdownOpen = !dropdownOpen" class="p-1 rounded-full text-gray-400 hover:text-gray-500 relative">
+                                <span class="sr-only">View notifications</span>
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                </svg>
+                                @if($notifications->count() > 0)
+                                    <span class="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-500 rounded-full">
+                {{ $notifications->count() }}
+            </span>
+                                @endif
+                            </button>
 
-                            <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 h-full w-full z-10"></div>
-
-                            <div x-show="dropdownOpen" class="absolute right-0 mt-2 bg-white rounded-md shadow-lg overflow-hidden z-20" style="width:20rem;">
-                                <div class="py-2">
-                                    <a href="#" class="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2">
-                                        <img class="h-8 w-8 rounded-full object-cover mx-1" src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80" alt="avatar">
-                                        <p class="text-gray-600 text-sm mx-2">
-                                            <span class="font-bold" href="#">Slick Net</span> Sent you a friend request. 45m
-                                        </p>
-                                    </a>
-
+                            <div x-show="dropdownOpen" @click.away="dropdownOpen = false" class="absolute right-0 mt-2 bg-white rounded-md shadow-lg w-80 z-50 overflow-hidden">
+                                <div class="py-2 max-h-64 overflow-y-auto">
+                                    @foreach($notifications as $notification)
+                                        <a href="#" class="flex items-center px-4 py-3 border-b hover:bg-gray-100">
+                                            <img class="h-8 w-8 rounded-full object-cover mx-1" src="/path/to/profile-picture.jpg" alt="avatar">
+                                            <p class="text-gray-600 text-sm mx-2">
+                                                <span class="font-bold">{{ $notification->data['sender_name'] ?? 'Unknown' }}</span>
+                                                {{ $notification->data['message'] ?? 'sent you a friend request.' }}
+                                                <br>
+                                                <span class="text-xs text-gray-400">{{ $notification->created_at->diffForHumans() }}</span>
+                                            </p>
+                                        </a>
+                                    @endforeach
                                 </div>
-                                <a href="#" class="block bg-gray-800 text-white text-center font-bold py-2">See all notifications</a>
+                                <a href="{{ route('notifications.index') }}" class="block bg-gray-800 text-white text-center font-bold py-2">See all notifications</a>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Profile dropdown -->
+                        <!-- Profile dropdown -->
                     <div class="relative flex items-center space-x-4">
                         <button class="flex items-center space-x-2 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-full">
                             <img class="h-8 w-8 rounded-full" src="/api/placeholder/32/32" alt="Profile">
