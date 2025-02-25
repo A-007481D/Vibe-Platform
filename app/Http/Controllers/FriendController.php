@@ -28,22 +28,30 @@ class FriendController extends Controller
 
     public function unfriend(User $user)
     {
+
         $authUser = auth()->user();
 
-        // Ensure we delete the correct friendship row
-        $user1 = $authUser->id;
-        $user2 = $user->id;
+        $authUser->friends()->detach($user->id);
+        $user->friends()->detach($authUser->id);
 
-        if ($user1 > $user2) {
-            [$user1, $user2] = [$user2, $user1]; // Ensure ordering matches insertion logic
-        }
+        return response()->json(['success' => true, 'message' => 'Friend removed successfully!', 'friend_id' => $user->id]);
 
-        DB::table('friends')
-            ->where('user_id', $user1)
-            ->where('friend_id', $user2)
-            ->delete();
-
-        return redirect()->back()->with('success', 'Friend removed successfully!');
+//        $authUser = auth()->user();
+//
+//        // Ensure we delete the correct friendship row
+//        $user1 = $authUser->id;
+//        $user2 = $user->id;
+//
+//        if ($user1 > $user2) {
+//            [$user1, $user2] = [$user2, $user1]; // Ensure ordering matches insertion logic
+//        }
+//
+//        DB::table('friends')
+//            ->where('user_id', $user1)
+//            ->where('friend_id', $user2)
+//            ->delete();
+//
+//        return redirect()->back()->with('success', 'Friend removed successfully!');
     }
 
 
