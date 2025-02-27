@@ -7,7 +7,7 @@
         <!-- Create Post Section -->
         <div class="bg-white rounded-xl shadow-sm mb-6 p-4">
             <div class="flex gap-3">
-                <img src="{{ auth()->user()->profile_photo ? Storage::url(auth()->user()->profile_photo) : '/default-avatar.png' }}" class="w-10 h-10 rounded-full" alt="Your Profile">
+            <img src="{{ auth()->user()->profile_photo ? asset('storage/' . auth()->user()->profile_photo) : asset('/default-avatar.png') }}" class="w-10 h-10 rounded-full" alt="Your Profile">
                 <div class="flex-1">
                     <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -63,12 +63,23 @@
                     <!-- Post Interactions -->
                     <div class="px-4 py-3 bg-slate-50 flex items-center gap-6">
                         <!-- Example interaction buttons (likes, comments, share) -->
-                        <button class="flex items-center gap-2 text-slate-600 hover:text-violet-500">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        <button
+                            class="like-btn flex items-center gap-2 text-slate-600 hover:text-violet-500"
+                            hx-post="{{ route('like.toggle', $post->id) }}"
+                            hx-swap="outerHTML"
+                            hx-target="this"
+                            hx-trigger="click"
+                            hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'
+                        >
+                            <svg class="w-5 h-5 like-icon {{ $post->likes->contains('user_id', auth()->id()) ? 'text-red-500' : '' }}"
+                                 fill="{{ $post->likes->contains('user_id', auth()->id()) ? 'red' : 'none' }}"
+                                 stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                             </svg>
-                            <span>{{ $post->likes()->count() }}</span>
+                            <span class="like-count">{{ $post->likes->count() }}</span>
                         </button>
+
                         <button onclick="toggleComments('comments-{{ $post->id }}')" class="flex items-center gap-2 text-slate-600 hover:text-violet-500">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
@@ -108,7 +119,6 @@
         </div>
     </div>
 
-    <!-- JavaScript for toggling comments -->
     <script>
         function toggleComments(id) {
             const comments = document.getElementById(id);
