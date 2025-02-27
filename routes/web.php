@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\FriendRequestController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -56,6 +57,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::resource('posts', PostController::class);
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/like/{post}', [LikeController::class, 'toggleLike'])->name('like.toggle');
 });
 
 
