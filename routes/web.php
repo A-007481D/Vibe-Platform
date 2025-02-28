@@ -10,6 +10,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserSearchController;
 use App\Models\FriendRequest;
 use Illuminate\Support\Facades\Mail;
@@ -58,6 +59,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('posts', PostController::class);
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/like/{post}', [LikeController::class, 'toggleLike'])->name('like.toggle');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/users/{user}', [UserProfileController::class, 'show'])->name('profile.show');
 });
 
 
