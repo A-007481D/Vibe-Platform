@@ -18,11 +18,10 @@ class CreateFriendsTable extends Migration
             $table->uuid('user_id');
             $table->uuid('friend_id');
             $table->timestamps();
-
+            $table->index('user_id');
+            $table->index('friend_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('friend_id')->references('id')->on('users')->onDelete('cascade');
-
-            // Ensure the pair is unique
             $table->unique(['user_id', 'friend_id']);
             $table->unique(['friend_id', 'user_id']);
         });
