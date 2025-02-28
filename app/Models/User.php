@@ -49,6 +49,13 @@ class User extends Authenticatable
         'username',
     ];
 
+    protected $withCount = [
+        'posts',
+        'likes',
+        'comments',
+        'shares',
+//        'friends' infinite loop cause -_-
+    ];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -123,21 +130,35 @@ class User extends Authenticatable
         return $baseUsername;
     }
 
-    public function friends(): BelongsToMany
+    public function friends()
     {
         return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
-            ->withTimestamps();
+            ->withTimestamps()
+            ->withPivot('created_at'); // Add this line
     }
 
-    public function isFriend($user)
+    public function isFriend(User $user)
     {
         return $this->friends()->where('friend_id', $user->id)->exists();
     }
+
 
     public function likes()
     {
         return $this->hasMany(Like::class);
     }
 
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function shares()
+    {
+        return $this->hasMany(Share::class);
+    }
 
 }
