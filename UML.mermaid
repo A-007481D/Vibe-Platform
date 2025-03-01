@@ -1,0 +1,110 @@
+classDiagram
+    class User {
+        +UUID id
+        +String username
+        +String first_name
+        +String last_name
+        +String email
+        +String password
+        +String bio
+        +String profile_picture
+        +Timestamp created_at
+        +Timestamp updated_at
+    }
+
+    class Friendship {
+        +UUID id
+        +UUID user_id
+        +UUID friend_id
+        +String status (pending, accepted, rejected, blocked)
+        +Timestamp created_at
+        +Timestamp updated_at
+    }
+
+    class FriendRequest {
+        +UUID id
+        +UUID sender_id
+        +UUID receiver_id
+        +String status (pending, accepted, rejected)
+        +Timestamp created_at
+    }
+
+    class Post {
+        +UUID id
+        +UUID user_id
+        +String content
+        +String image_url
+        +Timestamp created_at
+        +Timestamp updated_at
+    }
+
+    class Like {
+        +UUID id
+        +UUID user_id
+        +UUID post_id
+        +Timestamp created_at
+    }
+
+    class Comment {
+        +UUID id
+        +UUID user_id
+        +UUID post_id
+        +String content
+        +Timestamp created_at
+        +Timestamp updated_at
+    }
+
+    class Share {
+        +UUID id
+        +UUID user_id
+        +UUID post_id
+        +Timestamp created_at
+    }
+
+    class Message {
+        +UUID id
+        +UUID sender_id
+        +UUID receiver_id
+        +String content
+        +Boolean seen
+        +Timestamp created_at
+    }
+
+    class Conversation {
+        +UUID id
+        +UUID user_one_id
+        +UUID user_two_id
+        +UUID last_message_id
+        +Timestamp created_at
+        +Timestamp updated_at
+    }
+
+    class Notification {
+        +UUID id
+        +UUID user_id
+        +String type (friend_request, message, post_like, post_comment)
+        +JSONB data
+        +Boolean seen
+        +Timestamp created_at
+    }
+
+%% Relationships %%
+    User "1" -- "0..*" Friendship : has
+    Friendship "1" -- "1" User : friend_of
+    User "1" -- "0..*" FriendRequest : sends
+    FriendRequest "1" -- "1" User : requested_by
+
+    User "1" -- "0..*" Post : creates
+    Post "1" -- "0..*" Like : receives
+    Post "1" -- "0..*" Comment : has
+    Post "1" -- "0..*" Share : shared_by
+
+    User "1" -- "0..*" Message : sends
+    Message "1" -- "1" User : received_by
+
+    Conversation "1" -- "0..*" Message : has
+    Conversation "1" -- "1" User : between_users
+
+    User "1" -- "0..*" Notification : receives
+
+    %% pivot tables between post and friendship/post- notification should have a generalization of type request, post, like, comment etc they shouldnt all be type null
